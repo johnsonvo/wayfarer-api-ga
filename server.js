@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Controllers
-const signupCtrl = require('./controllers/signupCtrl');
+const dumpDataCtrl = require('./controllers/dumpDataCtrl');
 
 // ++++++ MIDDLEWARE ++++++ //
 
@@ -17,16 +17,25 @@ app.use((req, res, next) => {
   next();
 });
 
+//express sessions middle ware
+
+//route to serve public directory
+
 // BodyParser
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+
 // ++++++ HTML ROUTES ++++++ //
-// GET Root Route
+// GET Root Route - 
 app.get('/', (req, res) => {
   res.send('<h1>Landing Page</h1>');
 });
 
+// ++++++ API ROUTES ++++++ //
+
+// Dump all data
+app.use('/api/admin/alldata', dumpDataCtrl);
 
 
 // ++++++ START SERVER ++++++ //
