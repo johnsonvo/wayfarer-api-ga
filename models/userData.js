@@ -5,11 +5,11 @@ const UserSchema = new Schema({
   name: String,
   username: {
     type: String,
-    unique: true,
+    required: true,
   },
   email: {
     type: String,
-    unique: true,
+    required: true,
   },
   favoriteCity: String,
   userPic: String,
@@ -18,6 +18,11 @@ const UserSchema = new Schema({
     default: Date.now
   }
 });
+
+UserSchema.index(
+  { username: 1, email: 1 }, 
+  { unique: true },
+);
 
 const UserData = mongoose.model('User', UserSchema);
 
