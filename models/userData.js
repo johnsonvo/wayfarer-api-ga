@@ -11,7 +11,11 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  favoriteCity: String,
+  password: {
+    type: String,
+    required: true,
+  },
+  currentCity: String,
   userPic: String,
   signupDate: {
     type: Date,

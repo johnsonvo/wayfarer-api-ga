@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
 // Database
 const db = require('../models');
@@ -11,6 +12,12 @@ const USERS_URL = '/api/v1/users';
 // GET '/'
 // // Don't return all users
 // // res.json({error: permission denied})
+// // but for testing....
+router.get('/', (req, res) => {
+  db.UserData.find({})
+    .catch(err => console.log(err))
+    .then(allUsers => res.json({data: allUsers}));
+})
 
 // POST '/login'
 // // POST because creating new session in db
@@ -39,6 +46,9 @@ router.post('/signup', (req, res) => {
   if (!req.body.email) {
     errors.push({message: 'Please enter your email'});
   }
+  if (!req.body.username) {
+    errors.push({message: 'Please enter your username'});
+  }
   if (!req.body.password) {
     errors.push({message: 'Please enter your password'});
   }
@@ -62,6 +72,7 @@ router.post('/signup', (req, res) => {
             // name: req.body.name,
             email: req.body.email,
             password: hash,
+            username: req.body.username,
           }
           // Add the user to the DB
           db.UserData.create(userObj)
