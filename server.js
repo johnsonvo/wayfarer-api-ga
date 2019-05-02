@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 4000;
 // Controllers
 const loginCtrl = require('./controllers/loginCtrl');
 const signupCtrl = require('./controllers/signupCtrl');
+const profileCtrl = require('./controllers/profileCtrl');
 const userPostsCtrl = require('./controllers/userPostsCtrl');
 const dumpDataCtrl = require('./controllers/dumpDataCtrl');
 
@@ -40,6 +41,9 @@ app.use('/api/login', loginCtrl);
 
 // GET & POST User signup route
 app.use('/api/signup', signupCtrl);
+
+// GET & POST User profile route
+app.use('/api/profile', profileCtrl);
 
 //GET & POST User posts route
 app.use('/api/userPosts', userPostsCtrl);

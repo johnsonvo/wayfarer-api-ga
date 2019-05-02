@@ -19,6 +19,7 @@ router.post('/signup', (req, res) => {
     db.UserData.create(newUser, (err, newUser) => {
         if (err) return res.json({status: 500, error: 'Unable to save data - Try Again'})
         //if user created succesfully redirect user to profile page or login page
+        
     })
 });
 

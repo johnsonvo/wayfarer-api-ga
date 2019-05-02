@@ -8,18 +8,15 @@ const db = require('../models');
 
 // post login route
 
-router.post('/signup', (req, res) => {
+router.post('/userPost', (req, res) => {
 
     //Validate form data
 
     //Generate form and hash password
 
-    //Create Object to hold new user data
+    //Create Object to hold new post data
 
-    db.UserData.create(newUser, (err, newUser) => {
-        if (err) return res.json({status: 500, error: 'Unable to save data - Try Again'})
-        //if user created succesfully redirect user to profile page or login page
-    })
+    //Write single post to user profile page
 });
 
 module.exports = router;

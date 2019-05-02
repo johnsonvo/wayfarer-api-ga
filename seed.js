@@ -5,19 +5,20 @@ const seedData = [
     name: "John Doe",
     username: "JDoe",
     email: "jdoe@ga.com",
-    fCity: "SF",
+    favoriteCity: "SF",
+    
   },
   {
     name: "Foo Bar",
     username: "FBar",
     email: "fbar@ga.com",
-    fCity: "GA",
+    favoriteCity: "GA",
   },
   {
     name: "Too Low",
     username: "Tlow",
     email:"tlow@ga.com",
-    fCity:"SF",
+    favoriteCity:"SF",
   }
 
 ]
