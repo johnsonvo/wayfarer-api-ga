@@ -5,6 +5,9 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Controllers
+const loginCtrl = require('./controllers/loginCtrl');
+const signupCtrl = require('./controllers/signupCtrl');
+const userPostsCtrl = require('./controllers/userPostsCtrl');
 const dumpDataCtrl = require('./controllers/dumpDataCtrl');
 
 // ++++++ MIDDLEWARE ++++++ //
@@ -32,10 +35,19 @@ app.get('/', (req, res) => {
   res.send('<h1>Landing Page</h1>');
 });
 
+// GET & POST User login route
+app.use('/api/login', loginCtrl);
+
+// GET & POST User signup route
+app.use('/api/signup', signupCtrl);
+
+//GET & POST User posts route
+app.use('/api/userPosts', userPostsCtrl);
+
 // ++++++ API ROUTES ++++++ //
 
-// Dump all data
-app.use('/api/admin/alldata', dumpDataCtrl);
+// Dump all data for testing puposes only
+app.use('/api/alldata', dumpDataCtrl);
 
 
 // ++++++ START SERVER ++++++ //

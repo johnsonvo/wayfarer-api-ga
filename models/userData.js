@@ -5,8 +5,8 @@ const UserSchema = new Schema(
 	{
 		name: String,
 		username: String,
-		email:String,
-		fCity:String,
+		email: String,
+		fCity: String,
 		date: {
 			type: Date,
 			default: Date.now
