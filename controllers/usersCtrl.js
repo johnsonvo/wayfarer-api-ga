@@ -125,6 +125,10 @@ router.post('/signup', (req, res) => {
           })
     })
 })
+
+// POST '/logout'
+// Delete the user's session
+
 // GET '/profile' 
 // // Get the session token from the request to find the username
 // // Search the db for that username
