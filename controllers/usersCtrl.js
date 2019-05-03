@@ -133,7 +133,9 @@ router.post('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) return res.json({error: err, message: genericError});
   });
-  res.json({loggedOut: true});
+  res.status(200).clearCookie('connect.sid', {
+    path: '/',
+  }).json({loggedOut: true});
 });
 
 // GET '/profile'
