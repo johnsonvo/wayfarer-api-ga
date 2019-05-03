@@ -7,5 +7,7 @@ mongoose.connect(DB_URL, {useNewUrlParser: true, useFindAndModify: false, useCre
 
 
 module.exports = {
-  UserData: require('./userData')
+  UserData: require('./userData'),
+  UserPost: require('./userPost'),
+  City: require('./city'),
 };

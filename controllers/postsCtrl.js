@@ -10,6 +10,11 @@ const POSTS_URL = '/api/v1/posts';
 // ------------ Routes ----------- //
 // GET '/'
 // // Get all posts, return as json
+router.get('/', (req, res) => {
+  db.UserPost.find({})
+    .catch(err => console.log(err))
+    .then(allPosts => res.json({data: allPosts}));
+});
 
 // POST '/'
 // // Create a new post. Return the new post as a json
