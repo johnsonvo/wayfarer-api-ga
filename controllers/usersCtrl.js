@@ -21,16 +21,18 @@ router.get('/', (req, res) => {
 
 // POST '/login'
 router.post('/login', (req, res) => {
+  const errors = []; // grab all the errors for res
   const genericError = 'Something went wrong. Please try again';
   if (!req.body.username) { // No username
-    return res.json({user: req.body, errors: [{message: 'Please enter a username'}]});
+    errors.push({message: 'Please enter your username'});
   }
   if (!req.body.password) { // No password
-    return res.json({user: req.body, errors: [{message: 'Please enter a password'}]});
+    errors.push({message: 'Please enter your password'});
   }
-
-
-
+  if (errors.length) { // If any validation failed, respond with error array
+    return res.json({user: req.body, errors}); // 'errors' short for 'errors: errors'
+  }
+  // Lookup the user in the db
   db.UserData.findOne({username: req.body.username})
     .catch(err => res.json({user: req.body, errors: [{message: genericError}]}))
     .then(foundUser => {
@@ -45,9 +47,8 @@ router.post('/login', (req, res) => {
             req.session.currentUser = {
               username: foundUser.username,
             };
-            // And respond success, sending the session token as well
-            // Todo - check the session token is in fact being sent back
-            return res.json({login: true, status: 'success'});
+            // Respond login true, with no errors
+            return res.json({login: true});
           } else {
             // Password is not a match
             return res.json({user: req.body, errors: [{message: 'Username or password is incorrect'}]});
