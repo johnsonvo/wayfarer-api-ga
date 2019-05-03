@@ -12,14 +12,50 @@ const USERS_URL = '/api/v1/users';
 // GET '/'
 // // Don't return all users
 // // res.json({error: permission denied})
-// // but for testing....
+// // but for testing.... Todo: swap out with denied response
 router.get('/', (req, res) => {
   db.UserData.find({})
     .catch(err => console.log(err))
     .then(allUsers => res.json({data: allUsers}));
-})
+});
 
 // POST '/login'
+router.post('/login', (req, res) => {
+  const genericError = 'Something went wrong. Please try again';
+  if (!req.body.username) { // No username
+    return res.json({user: req.body, errors: [{message: 'Please enter a username'}]});
+  }
+  if (!req.body.password) { // No password
+    return res.json({user: req.body, errors: [{message: 'Please enter a password'}]});
+  }
+
+
+
+  db.UserData.findOne({username: req.body.username})
+    .catch(err => res.json({user: req.body, errors: [{message: genericError}]}))
+    .then(foundUser => {
+      // If no user found...
+      if (!foundUser) return res.json({user: req.body, errors: [{message: 'Username or password is incorrect'}]});
+      // Otherwise, compare salted and hashed passwords
+      bcrypt.compare(req.body.password, foundUser.password)
+        .catch(err => res.json({user: req.body, errors: [{message: genericError}]}))
+        .then(isMatch => {
+          if (isMatch) {
+            req.session.loggedIn = true;
+            req.session.currentUser = {
+              username: foundUser.username,
+            };
+            // And respond success, sending the session token as well
+            // Todo - check the session token is in fact being sent back
+            return res.json({login: true, status: 'success'});
+          } else {
+            // Password is not a match
+            return res.json({user: req.body, errors: [{message: 'Username or password is incorrect'}]});
+          }
+        });
+    });
+});
+
 // // POST because creating new session in db
 // // Search user db for user
 // // hashes and checks password against db
@@ -77,7 +113,7 @@ router.post('/signup', (req, res) => {
           // Add the user to the DB
           db.UserData.create(userObj)
             .catch(err => res.json({errors: [{message: 'Error adding to DB'}], user: userObj, details: err}))
-            .then(newUser => res.json({status: 'success', user: newUser}));      
+            .then(newUser => res.json({status: 'success', user: newUser}));
           })
     })
 })
