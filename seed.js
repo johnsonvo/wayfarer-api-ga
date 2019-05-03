@@ -1,37 +1,24 @@
 const db = require('./models');
 
-const seedData = [
-  {
-    name: "John Doe",
-    username: "JDoe",
-    email: "jdoe@ga.com",
-    favoriteCity: "SF",
-    
-  },
-  {
-    name: "Foo Bar",
-    username: "FBar",
-    email: "fbar@ga.com",
-    favoriteCity: "GA",
-  },
-  {
-    name: "Too Low",
-    username: "Tlow",
-    email:"tlow@ga.com",
-    favoriteCity:"SF",
-  }
-
+const seedUserData = [
+  {name: "Joe Doe", username: "joe", email: "joe@ga.com", currentCity: "San Fran"},
+  {name: "Dan John", username: "dan", email: "dan@ga.com", currentCity: "London"},
+  {name: "Tim Timson", username: "tim", email: "tim@ga.com", currentCity: "Paris"},
+  {name: "John Smith", username: "john", email: "john@ga.com", currentCity: "San Jose"},
 ]
 
 // Remove all data
-db.UserData.deleteMany((err, deletedUserData) => {
-  if (err) console.log(err);
-  console.log('Deleted User Data successfully');
+db.UserData.deleteMany({})
+  .catch(err => console.log({error: err}))
+  .then(deletedUsers => {
+    console.log('Deleted all existing users successfully.');
 
-  // Populate Mongo with new seed
-  db.UserData.create(seedData, (err, newUserData) => {
-    if (err) console.log(err);
-    console.log(`Created ${newUserData.length} new Data successfully`);
-    process.exit();
-  });
-});
+    // Populate Mongo with new seed
+    db.UserData.create(seedUserData)
+      .catch(err => console.log({error: err}))
+      .then(newUsers => {
+        console.log(`Created ${newUsers.length} new users successfully.`);
+        process.exit();
+    });
+
+  })
