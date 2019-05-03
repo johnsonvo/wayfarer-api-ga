@@ -127,9 +127,16 @@ router.post('/signup', (req, res) => {
 })
 
 // POST '/logout'
-// Delete the user's session
+router.post('/logout', (req, res) => {
+  const genericError = 'Something went wrong. Please try again';
+  // Delete the user's session
+  req.session.destroy(err => {
+    if (err) return res.json({error: err, message: genericError});
+  });
+  res.json({loggedOut: true});
+});
 
-// GET '/profile' 
+// GET '/profile'
 router.get('/profile', (req, res) => {
   const genericError = 'Something went wrong. Please try again';
   // Check if user is logged in
