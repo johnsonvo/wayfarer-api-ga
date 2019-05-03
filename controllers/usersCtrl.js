@@ -114,7 +114,14 @@ router.post('/signup', (req, res) => {
           // Add the user to the DB
           db.UserData.create(userObj)
             .catch(err => res.json({errors: [{message: 'Error adding to DB'}], user: userObj, details: err}))
-            .then(newUser => res.json({status: 'success', user: newUser}));
+            .then(newUser => {
+              // Automatically log user in
+              req.session.loggedIn = true;
+              req.session.currentUser = {
+                username: newUser.username,
+              };
+              return res.json({success: true})
+            });
           })
     })
 })
