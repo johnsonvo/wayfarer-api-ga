@@ -130,11 +130,26 @@ router.post('/signup', (req, res) => {
 // Delete the user's session
 
 // GET '/profile' 
-// // Get the session token from the request to find the username
-// // Search the db for that username
-// // Return json of the user info, including username but NOT password hash
-// // If they are not signed in (no session token), res.json({login: false})
-// // React frontend will open login modal if it gets login === false response
+router.get('/profile', (req, res) => {
+  const genericError = 'Something went wrong. Please try again';
+  // Check if user is logged in
+  if (!req.session.loggedIn) {
+    return res.json({loggedIn: false})
+  }
+  // Get the username
+  const { username } = req.session.currentUser;
+  // Look up their profile
+  db.UserData.findOne({username})
+    .catch(err => res.json({username, errors: [{message: genericError}]}))
+    .then(foundUser => {
+      // If no user found...
+      if (!foundUser) return res.json({username, errors: [{message: 'Unknown username'}]});
+      // otherwise return the user info, minus the password hash
+      foundUser.password = '';
+      return res.json({data: foundUser});
+    });
+});
+// // Todo React frontend will open login modal if it gets loggedIn === false response
 
 // PUT '/profile'
 // // For updating the profile
