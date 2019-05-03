@@ -86,11 +86,17 @@ router.post('/signup', (req, res) => {
   if (!req.body.username) {
     errors.push({message: 'Please enter your username'});
   }
+  if (!req.body.name) {
+    errors.push({message: 'Please enter your full name'});
+  }
   if (!req.body.password) {
     errors.push({message: 'Please enter your password'});
   }
   if (req.body.password !== req.body.password2) {
     errors.push({message: 'Your passwords do not match'});
+  }
+  if (req.body.currentCity !== req.body.currentCity) {
+    errors.push({message: 'Please enter a current city'});
   }
   if (errors.length) { // If any validation failed, respond with error array
     return res.json({user: req.body, errors}); // 'errors' short for 'errors: errors'
@@ -110,6 +116,8 @@ router.post('/signup', (req, res) => {
             email: req.body.email,
             password: hash,
             username: req.body.username,
+            name: req.body.name,
+            currentCity: req.body.currentCity,
           }
           // Add the user to the DB
           db.UserData.create(userObj)
