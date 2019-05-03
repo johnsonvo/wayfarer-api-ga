@@ -1,10 +1,11 @@
 const db = require('./models');
 
+const pass1234 = '$2a$10$u5j5gwgDwDO53lzy3eUqWOsq5YCDBv4GLCVbpzXnxgn1nnYNtSvOK';
 const seedUserData = [
-  {name: "Joe Doe", username: "joe", email: "joe@ga.com", currentCity: "San Fran"},
-  {name: "Dan John", username: "dan", email: "dan@ga.com", currentCity: "London"},
-  {name: "Tim Timson", username: "tim", email: "tim@ga.com", currentCity: "Paris"},
-  {name: "John Smith", username: "john", email: "john@ga.com", currentCity: "San Jose"},
+  {name: "Joe Doe", password: pass1234, username: "joe", email: "joe@ga.com", currentCity: "San Fran"},
+  {name: "Dan John", password: pass1234, username: "dan", email: "dan@ga.com", currentCity: "London"},
+  {name: "Tim Timson", password: pass1234, username: "tim", email: "tim@ga.com", currentCity: "Paris"},
+  {name: "John Smith", password: pass1234, username: "john", email: "john@ga.com", currentCity: "San Jose"},
 ]
 
 const seedCityData = [
@@ -27,41 +28,48 @@ const sampleText = [
   "Sed pulvinar proin gravida hendrerit.",
 ]
 
-// const seedUserPostData = [
-//   {username: 'joe', cityName: 'London', title: 'Lorem', content: ''}
-// ]
+const numOfPosts = 100;
 
 const seedUserPostData = [];
-
-const numOfPosts = 10;
 for (let i = 0; i < numOfPosts; i++) {
   const randomUser = seedUserData[Math.floor(Math.random() * seedUserData.length)];
   const randomText = sampleText[Math.floor(Math.random() * sampleText.length)];
   const randomCity = seedCityData[Math.floor(Math.random() * seedCityData.length)];
-  const randomTitle = randomText.substring(0, 10);
+  const randomTitle = randomText.substring(5, 25);
 
-  seedUserPostData.push = {
+  seedUserPostData.push({
     username: randomUser.username,
     cityName: randomCity.cityName,
     title: randomTitle,
     content: randomText,
-  };
-}
+  });
+};
 
-console.log(seedUserPostData);
+// Remove all users
+db.UserData.deleteMany({})
+  .catch(err => console.log({action: 'deleting users', error: err}))
+  .then(deletedUsers => {
+    console.log('Deleted all existing users successfully.');
 
-// // Remove all data
-// db.UserData.deleteMany({})
-//   .catch(err => console.log({error: err}))
-//   .then(deletedUsers => {
-//     console.log('Deleted all existing users successfully.');
+    // Populate Mongo with new Users seed data
+    db.UserData.create(seedUserData)
+      .catch(err => console.log({action: 'creating users', error: err}))
+      .then(newUsers => {
+        console.log(`Created ${newUsers.length} new users successfully.`);
 
-//     // Populate Mongo with new seed
-//     db.UserData.create(seedUserData)
-//       .catch(err => console.log({error: err}))
-//       .then(newUsers => {
-//         console.log(`Created ${newUsers.length} new users successfully.`);
-//         process.exit();
-//     });
+        // Remove all posts
+        db.UserPost.deleteMany({})
+          .catch(err => console.log({action: 'deleting posts', error: err}))
+          .then(deletedUsers => {
+            console.log('Deleted all existing posts successfully.');
 
-//   })
+            // Populate Mongo with new UserPosts seed data
+            db.UserPost.create(seedUserPostData)
+            .catch(err => console.log({action: 'creating posts', error: err}))
+            .then(newPosts => {
+              console.log(`Created ${newPosts.length} new user posts successfully.`)
+              process.exit();
+            });
+          });
+      });
+  });
