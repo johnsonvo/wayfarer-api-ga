@@ -15,7 +15,7 @@ const citiesCtrl = require('./controllers/citiesCtrl');
 // Express CORS Middleware
 // npm i cors
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://movie-client-50.herokuapp.com'], // replace second one with our react heroku
+  origin: ['http://localhost:3000', 'https://wayfare-front-345.herokuapp.com/'],
           credentials: true, // This allows the session cookie to be sent back and forth
           optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
