@@ -16,17 +16,14 @@ const citiesCtrl = require('./controllers/citiesCtrl');
 // npm i cors
 const corsOptions = {
   origin: ['http://localhost:3000', 'https://wayfare-front-345.herokuapp.com/'],
-          credentials: true, // This allows the session cookie to be sent back and forth
-          optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  methods: ['GET', 'PUT', 'POST', 'DELETE'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+  credentials: true, // This allows the session cookie to be sent back and forth
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions));
-
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
+// Enable CORS "Pre-Flight" for all routes
+app.options('*', cors())
 
 // Express Sessions
 app.use(session({
