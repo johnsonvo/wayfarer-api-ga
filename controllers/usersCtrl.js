@@ -86,11 +86,17 @@ router.post('/signup', (req, res) => {
   if (!req.body.username) {
     errors.push({message: 'Please enter your username'});
   }
+  if (!req.body.name) {
+    errors.push({message: 'Please enter your full name'});
+  }
   if (!req.body.password) {
     errors.push({message: 'Please enter your password'});
   }
   if (req.body.password !== req.body.password2) {
     errors.push({message: 'Your passwords do not match'});
+  }
+  if (req.body.currentCity !== req.body.currentCity) {
+    errors.push({message: 'Please enter a current city'});
   }
   if (errors.length) { // If any validation failed, respond with error array
     return res.json({user: req.body, errors}); // 'errors' short for 'errors: errors'
@@ -110,6 +116,8 @@ router.post('/signup', (req, res) => {
             email: req.body.email,
             password: hash,
             username: req.body.username,
+            name: req.body.name,
+            currentCity: req.body.currentCity,
           }
           // Add the user to the DB
           db.UserData.create(userObj)
@@ -156,4 +164,33 @@ router.get('/profile', (req, res) => {
 // // Checks session token to get the username
 // // The username in the session token also acts as validation they are allowed to edit
 
+router.put('/profile', (req, res) => {
+  const genericError = 'Please try again. Error updating profile';
+  if (!req.session.loggedIn) {
+    return res.json({loggedIn: false})
+  }
+  const { username } = req.session.currentUser;
+  // const updateUser = {
+  //   email: req.body.email,
+  //   username: req.body.username,
+  //   name: req.body.name,
+  //   currentCity: req.body.currentCity,
+  // }
+  
+  db.UserData.findOneAndUpdate({username}, req.body, {new: true} )
+    .catch(err => res.json({username, errors: [{message: genericError}]}))
+    .then(updatedUser => {
+      // If no user found...
+      if (!updatedUser) return res.json({username, errors: [{message: 'Unknown username'}]});
+      
+      // If username changed then change username in their session token
+      if (updatedUser.username !== username){
+        req.session.currentUser = {
+          username: updatedUser.username,
+        };
+      }
+      // otherwise return success
+      return res.json({success: true});
+    });
+});
 module.exports = router;
