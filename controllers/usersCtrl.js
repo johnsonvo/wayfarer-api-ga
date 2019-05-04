@@ -164,4 +164,33 @@ router.get('/profile', (req, res) => {
 // // Checks session token to get the username
 // // The username in the session token also acts as validation they are allowed to edit
 
+router.put('/profile', (req, res) => {
+  const genericError = 'Please try again. Error updating profile';
+  if (!req.session.loggedIn) {
+    return res.json({loggedIn: false})
+  }
+  const { username } = req.session.currentUser;
+  // const updateUser = {
+  //   email: req.body.email,
+  //   username: req.body.username,
+  //   name: req.body.name,
+  //   currentCity: req.body.currentCity,
+  // }
+  
+  db.UserData.findOneAndUpdate({username}, req.body, {new: true} )
+    .catch(err => res.json({username, errors: [{message: genericError}]}))
+    .then(updatedUser => {
+      // If no user found...
+      if (!updatedUser) return res.json({username, errors: [{message: 'Unknown username'}]});
+      
+      // If username changed then change username in their session token
+      if (updatedUser.username !== username){
+        req.session.currentUser = {
+          username: updatedUser.username,
+        };
+      }
+      // otherwise return success
+      return res.json({success: true});
+    });
+});
 module.exports = router;
