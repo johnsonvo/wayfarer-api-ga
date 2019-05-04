@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 
 
 // --------------------- ROUTES ---------------------- //
-// GET Root Route 
+// GET Root Route
 app.get('/', (req, res) => {
   res.send('<h1>API Ready</h1>');
 });
