@@ -13,7 +13,7 @@ const CITIES_URL = '/api/v1/cities';
 router.get('/', (req, res) => {
   db.City.find({})
     .catch(err => console.log(err))
-    .then(allCities => res.json({data: allCities}));
+    .then(allCities => res.json({allCities}));
 });
 
 // GET '/:cityURL'
