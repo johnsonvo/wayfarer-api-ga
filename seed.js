@@ -68,7 +68,21 @@ db.UserData.deleteMany({})
             .catch(err => console.log({action: 'creating posts', error: err}))
             .then(newPosts => {
               console.log(`Created ${newPosts.length} new user posts successfully.`)
-              process.exit();
+
+              // Delete ALL cities
+              db.City.deleteMany({})
+                .catch(err => console.log({action: 'deleting posts', error: err}))
+                .then(deletedCities => {
+                  console.log('Deleted all existing cities success')
+
+                  // Populate Mongo with new City seed data
+                  db.City.create(seedCityData)
+                    .catch(err => console.log({action: 'creating cities', error: err}))
+                    .then(newCities => {
+                      console.log(`Created ${newCities.length} new cities`)
+                      process.exit();
+                    })
+                })
             });
           });
       });
