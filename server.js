@@ -16,8 +16,8 @@ const citiesCtrl = require('./controllers/citiesCtrl');
 // npm i cors
 const corsOptions = {
   origin: ['http://localhost:3000', 'https://wayfare-front-345.herokuapp.com'],
-  // methods: ['GET', 'PUT', 'POST', 'DELETE'],
-  // allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+  methods: ['GET', 'PUT', 'POST', 'DELETE'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
   credentials: true, // This allows the session cookie to be sent back and forth
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
