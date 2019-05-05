@@ -185,13 +185,13 @@ router.put('/profile', (req, res) => {
   //   name: req.body.name,
   //   currentCity: req.body.currentCity,
   // }
-  
+
   db.UserData.findOneAndUpdate({username}, req.body, {new: true} )
     .catch(err => res.json({username, errors: [{message: genericError}]}))
     .then(updatedUser => {
       // If no user found...
       if (!updatedUser) return res.json({username, errors: [{message: 'Unknown username'}]});
-      
+
       // If username changed then change username in their session token
       if (updatedUser.username !== username){
         req.session.currentUser = {
