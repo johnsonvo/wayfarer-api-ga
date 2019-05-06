@@ -8,6 +8,8 @@ const db = require('../models');
 // API Url
 const USERS_URL = '/api/v1/users';
 
+const genericError = 'Something went wrong. Please try again';
+
 // ------------ Routes ----------- //
 // GET '/'
 // // Don't return all users
@@ -22,7 +24,6 @@ router.get('/', (req, res) => {
 // POST '/login'
 router.post('/login', (req, res) => {
   const errors = []; // grab all the errors for res
-  const genericError = 'Something went wrong. Please try again';
   if (!req.body.username) { // No username
     errors.push({message: 'Please enter your username'});
   }
@@ -89,6 +90,9 @@ router.post('/signup', (req, res) => {
   if (!req.body.name) {
     errors.push({message: 'Please enter your full name'});
   }
+  if (!req.body.currentCity) {
+    errors.push({message: 'Please enter your current city'});
+  }
   if (!req.body.password) {
     errors.push({message: 'Please enter your password'});
   }
@@ -102,7 +106,6 @@ router.post('/signup', (req, res) => {
     return res.json({user: req.body, errors}); // 'errors' short for 'errors: errors'
   }
   // All previous validation passed, so creating user...
-  const genericError = 'Something went wrong. Please try again';
   bcrypt.genSalt(10)
     .catch(err => res.json({errors: [{message: genericError}], user: req.body, details: err}))
     .then(salt => {
@@ -136,7 +139,6 @@ router.post('/signup', (req, res) => {
 
 // POST '/logout'
 router.post('/logout', (req, res) => {
-  const genericError = 'Something went wrong. Please try again';
   // Delete the user's session
   req.session.destroy(err => {
     if (err) return res.json({error: err, message: genericError});
@@ -148,7 +150,6 @@ router.post('/logout', (req, res) => {
 
 // GET '/profile'
 router.get('/profile', (req, res) => {
-  const genericError = 'Something went wrong. Please try again';
   // Check if user is logged in
   if (!req.session.loggedIn) {
     return res.json({loggedIn: false})
@@ -163,7 +164,7 @@ router.get('/profile', (req, res) => {
       if (!foundUser) return res.json({username, errors: [{message: 'Unknown username'}]});
       // otherwise return the user info, minus the password hash
       foundUser.password = '';
-      return res.json({foundUser});
+      return res.json({loggedIn: true, foundUser});
     });
 });
 // // Todo React frontend will open login modal if it gets loggedIn === false response
