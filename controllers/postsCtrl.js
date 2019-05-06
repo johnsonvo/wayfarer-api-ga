@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 // // Create a new post. Return the new post as a json
 
 // GET '/:id'
-// // Search user db for post by _id
+// // Search post db for post by _id
 router.get('/:id', (req, res) => {
   db.UserPost.findById(req.params.id)
     .catch(err => res.json({errors: [{message: genericError, error: err}]}))
@@ -43,8 +43,5 @@ router.get('/user/:username', (req, res) => {
     .catch(err => res.json({errors: [{message: genericError, error: err}]}))
     .then(foundPosts => res.json({foundPosts}));
 });
-
-// GET '/city/:cityURL
-// // Return all posts created for that city
 
 module.exports = router;
