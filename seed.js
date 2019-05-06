@@ -39,7 +39,7 @@ for (let i = 0; i < numOfPosts; i++) {
 
   seedUserPostData.push({
     username: randomUser.username,
-    cityName: randomCity.cityURL,
+    cityURL: randomCity.cityURL,
     title: randomTitle,
     content: randomText,
   });
