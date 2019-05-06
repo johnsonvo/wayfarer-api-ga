@@ -19,6 +19,11 @@ router.get('/', (req, res) => {
 
 // POST '/'
 // // Create a new post. Return the new post as a json
+router.post('/', (req, res) => {
+  const errors = [];
+  // TODO: Add validation for characters.
+  db.UserPost.create()
+})
 
 // GET '/:id'
 // // Search post db for post by _id
