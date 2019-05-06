@@ -28,7 +28,7 @@ const sampleText = [
   "Sed pulvinar proin gravida hendrerit.",
 ]
 
-const numOfPosts = 100;
+const numOfPosts = 25;
 
 const seedUserPostData = [];
 for (let i = 0; i < numOfPosts; i++) {

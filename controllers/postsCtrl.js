@@ -19,6 +19,20 @@ router.get('/', (req, res) => {
 
 // POST '/'
 // // Create a new post. Return the new post as a json
+router.post('/', (req, res) => {
+  // const errors = [];
+  // TODO: Add validation for characters.
+  // let postObj = {
+  //   username: req.body.username,
+  //   cityURL: req.body.cityURL,
+  //   title: req.body.title,
+  //   content: req.body.content,
+  // }
+  // console.log();
+  db.UserPost.create(req.body)
+    .then(post => res.json({'new post ': post}))
+    .catch(err => res.json({details: err, errors: [{message: 'new post failed'}]}));
+});
 
 // GET '/:id'
 // // Search post db for post by _id
