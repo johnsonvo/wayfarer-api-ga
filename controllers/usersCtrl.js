@@ -90,6 +90,9 @@ router.post('/signup', (req, res) => {
   if (!req.body.name) {
     errors.push({message: 'Please enter your full name'});
   }
+  if (!req.body.currentCity) {
+    errors.push({message: 'Please enter your current city'});
+  }
   if (!req.body.password) {
     errors.push({message: 'Please enter your password'});
   }
