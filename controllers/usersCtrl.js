@@ -161,7 +161,7 @@ router.get('/profile', (req, res) => {
       if (!foundUser) return res.json({username, errors: [{message: 'Unknown username'}]});
       // otherwise return the user info, minus the password hash
       foundUser.password = '';
-      return res.json({foundUser});
+      return res.json({loggedIn: true, foundUser});
     });
 });
 // // Todo React frontend will open login modal if it gets loggedIn === false response
