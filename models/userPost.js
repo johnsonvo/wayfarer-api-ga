@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const UserPostSchema = new Schema({
   username: String,
-  cityName: String,
+  cityURL: String,
   title: String,
   content: String,
   date: {

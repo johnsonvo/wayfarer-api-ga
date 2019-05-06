@@ -14,7 +14,7 @@ const genericError = 'Something went wrong. Please try again';
 router.get('/', (req, res) => {
   db.UserPost.find({})
   .catch(err => res.json({errors: [{message: genericError, error: err}]}))
-    .then(allPosts => res.json({data: allPosts}));
+    .then(allPosts => res.json({allPosts}));
 });
 
 // POST '/'
